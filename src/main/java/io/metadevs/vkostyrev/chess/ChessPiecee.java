@@ -9,14 +9,15 @@ class ChessPiece {
     int col;
     String pieceIcon;
 
-    ChessPiece () {
-    }
-
-    ChessPiece (String pieceIcon) {
+    ChessPiece(int row, int col, String pieceIcon) {
+        this.row = row;
+        this.col = col;
         this.pieceIcon = pieceIcon;
     }
 
-    ChessPiece (char colour, String pieceIcon) {
+    ChessPiece(int row, int col, char colour, String pieceIcon) {
+        this.row = row;
+        this.col = col;
         this.colour = colour;
         this.pieceIcon = pieceIcon;
     }
@@ -48,11 +49,35 @@ class ChessPiece {
     public void checkIsMayPieceWalkThat(ChessPiece takenPiece) {
     }
 
-    public void isThereObstacleAlongPath(ChessPiece squareForMove) {
+    public void checkIsThereObstacleAlongPath(ChessPiece squareForMove) {
+    }
+
+    public void checkIsThereObstacleForwardPath(ChessPiece squareForMove) {
+    }
+
+    public void checkIsThereObstacleBackPath(ChessPiece squareForMove) {
+    }
+
+    public void checkIsThereObstacleLeftPath(ChessPiece squareForMove) {
+    }
+
+    public void checkIsThereObstacleRightPath(ChessPiece squareForMove) {
+    }
+
+    public void checkIsThereObstacleForwardRightPath(ChessPiece squareForMove) {
+    }
+
+    public void checkIsThereObstacleForwardLeftPath(ChessPiece squareForMove) {
+    }
+
+    public void checkIsThereObstacleBackLeftPath(ChessPiece squareForMove) {
+    }
+
+    public void checkIsThereObstacleBackRightPath(ChessPiece squareForMove) {
     }
 
     public void checkIsThereObstacleAtEndPath(ChessPiece squareForMove) {
-    } //TODO вероятно этот метод лишний так как предыдущий включает в себя его
+    }
 
     public void checkIsMayPieceCapture(ChessPiece squareForMove) {
     }
@@ -62,6 +87,14 @@ class ChessPiece {
 
     public void putPiece(ChessPiece squareForMove) {
         chessBoard[squareForMove.row][squareForMove.col] = this;
-        chessBoard[this.row][this.col] = new EmptySquare(" 　 ║");  //TODO в скобках EmptySquare() должна быть иконка " 　 ║" в виде аргумента
+
+        ChessPiece link =  new EmptySquare(this.row, this.col, " 　 ║");
+        chessBoard[this.row][this.col] = link;
+
+        this.row = squareForMove.row;
+        this.col = squareForMove.col;
+
+        System.out.println(link.pieceIcon);
+//        System.out.println();
     }
 }

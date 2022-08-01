@@ -4,6 +4,9 @@ import static io.metadevs.vkostyrev.chess.ChessBoard.chessBoard;
 import static io.metadevs.vkostyrev.chess.GameLogic.walkingColour;
 
 public class Pawn extends ChessPiece {
+    Pawn (int row, int col, char colour, String pieceIcon) {
+        super(row, col, colour, pieceIcon);
+    }
 
     @Override
     public void checkIsMayPieceWalkThat(ChessPiece squareForMove) {
@@ -17,7 +20,8 @@ public class Pawn extends ChessPiece {
                 System.out.println("Эта фигура не может так ходить.");
                 GameLogic.movePiece(this);
             }
-        } else {
+        }
+        if (walkingColour == 'b') {
             if ((squareForMove.row != this.row + 1) || (squareForMove.col < this.col - 1 || squareForMove.col > this.col + 1)) {
                 System.out.println("Эта фигура не может так ходить.");
                 GameLogic.movePiece(this);
@@ -42,7 +46,6 @@ public class Pawn extends ChessPiece {
                 GameLogic.movePiece(this);
             }
         }
-        putPiece(squareForMove);
     }
 
 //    @Override

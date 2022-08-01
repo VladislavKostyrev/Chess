@@ -1,8 +1,13 @@
 package io.metadevs.vkostyrev.chess;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Scanner;
 
 import static io.metadevs.vkostyrev.chess.ChessBoard.*;
+
+//TODO сделать всё двумя thread и обновлять каждый ход (enter) доску и ввод
+//TODO сделать запрос истории в виде вывода на экран досок (реализация с помощью хранения принтов досок в массиве)
 
 abstract public class GameLogic {
     static Scanner scanner = new Scanner(System.in);
@@ -24,7 +29,7 @@ abstract public class GameLogic {
     public static void showStartInfo() {
         System.out.println("""
                 "Добро пожаловать в консольный симулятор игры в шахматы.
-                Nгроки ходят по очереди, начиная с белых.
+                Соперники ходят по очереди, начиная с белых.
                 Чтобы сделать ход, напишите номер поля, откуда хотите взять фигуру.
                 Нажмите Enter.
                 Чтобы передвинуть фигуру, напишите номер поля, куда собираетесь передвинуть фигуру.
@@ -38,12 +43,12 @@ abstract public class GameLogic {
 
     public static void playerStep() {
         while (!win) {
-            printChessBoard();
             determineWalkingColour();
-            movePiece(takePiece());                        //TODO может как то покрасивее сделать?
+            ChessPiece takenPiece = takePiece();
+            movePiece(takenPiece);
             checkGameWin();                                //TODO добавить реализацию
             countGameSteps++;
-            playerStep();
+            printChessBoard();
         }
     }
 
@@ -60,11 +65,11 @@ abstract public class GameLogic {
 
     public static void movePiece(ChessPiece takenPiece) {
         System.out.print("Поставить фигуру на поле: ");
-        ChessPiece squareForMove = getChessPiece(); //TODO нейминг данного метода
+        ChessPiece squareForMove = getChessPiece(); //              TODO нейминг данного метода
 
         takenPiece.checkIsMayPieceWalkThat(squareForMove);
-        takenPiece.isThereObstacleAlongPath(squareForMove);
-        takenPiece.checkIsThereObstacleAtEndPath(squareForMove); //TODO нужен?
+        takenPiece.checkIsThereObstacleAlongPath(squareForMove);
+        takenPiece.checkIsThereObstacleAtEndPath(squareForMove);
         takenPiece.putPiece(squareForMove);
     }
 
@@ -104,7 +109,7 @@ abstract public class GameLogic {
             case '7' -> firstIndex = 1;
             case '8' -> firstIndex = 0;
             default -> {
-                System.out.println("Некорректный ввод 666. Пожалуйста повторите.");
+                System.out.println("Некорректный ввод. Пожалуйста повторите.");
                 takePiece();
             }
         }

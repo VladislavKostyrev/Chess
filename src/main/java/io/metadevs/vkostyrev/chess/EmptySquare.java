@@ -2,7 +2,7 @@ package io.metadevs.vkostyrev.chess;
 
 public class EmptySquare extends ChessPiece {
 
-    EmptySquare (String pieceIcon) {
-        super(pieceIcon);
+    EmptySquare (int row, int col, String pieceIcon) {
+        super(row, col, pieceIcon);
     }
 }
