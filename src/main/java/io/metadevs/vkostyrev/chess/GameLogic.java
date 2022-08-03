@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 import static io.metadevs.vkostyrev.chess.ChessBoard.*;
 
+//TODO реализовать пат, все виды ничьи тп
+
 //TODO сделать всё двумя thread и обновлять каждый ход (enter) доску и ввод
 //TODO сделать запрос истории в виде вывода на экран досок (реализация с помощью хранения принтов досок в массиве)
 
@@ -42,14 +44,13 @@ abstract public class GameLogic {
     }
 
     public static void playerStep() {
-        while (!win) {
-            determineWalkingColour();
-            ChessPiece takenPiece = takePiece();
-            movePiece(takenPiece);
-            checkGameWin();                                //TODO добавить реализацию
-            countGameSteps++;
-            printChessBoard();
-        }
+        determineWalkingColour();
+        ChessPiece takenPiece = takePiece();
+        movePiece(takenPiece);
+        checkGameWin();                                //TODO добавить реализацию
+        countGameSteps++;
+        System.out.println("Прошёл 6");
+        printChessBoard();
     }
 
     public static ChessPiece takePiece() {
@@ -71,6 +72,7 @@ abstract public class GameLogic {
         takenPiece.checkIsThereObstacleAlongPath(squareForMove);
         takenPiece.checkIsThereObstacleAtEndPath(squareForMove);
         takenPiece.putPiece(squareForMove);
+        System.out.println("Прошёл 5");
     }
 
     public static ChessPiece getChessPiece() {

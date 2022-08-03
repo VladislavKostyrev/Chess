@@ -96,4 +96,12 @@ public class ChessBoard {
         System.out.println("\n ╚════════════════════════════════════╝");
         System.out.println("   A    B    C   D    E    F   G    H");
     }
+
+    public static void printAllPieces() {
+        for (int i = 5; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                System.out.println(chessBoard[i][j].pieceIcon + " " + chessBoard[i][j].row + "." + chessBoard[i][j].col + " " + i + "." + j);
+            }
+        }
+    }
 }

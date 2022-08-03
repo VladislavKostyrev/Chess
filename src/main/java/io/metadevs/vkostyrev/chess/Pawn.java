@@ -1,6 +1,7 @@
 package io.metadevs.vkostyrev.chess;
 
 import static io.metadevs.vkostyrev.chess.ChessBoard.chessBoard;
+import static io.metadevs.vkostyrev.chess.GameLogic.movePiece;
 import static io.metadevs.vkostyrev.chess.GameLogic.walkingColour;
 
 public class Pawn extends ChessPiece {
@@ -18,13 +19,13 @@ public class Pawn extends ChessPiece {
         if (walkingColour == 'w') {
             if ((squareForMove.row != this.row - 1) || (squareForMove.col < this.col - 1 || squareForMove.col > this.col + 1)) {
                 System.out.println("Эта фигура не может так ходить.");
-                GameLogic.movePiece(this);
+                movePiece(this);
             }
         }
         if (walkingColour == 'b') {
             if ((squareForMove.row != this.row + 1) || (squareForMove.col < this.col - 1 || squareForMove.col > this.col + 1)) {
                 System.out.println("Эта фигура не может так ходить.");
-                GameLogic.movePiece(this);
+                movePiece(this);
             }
         }
 
@@ -37,13 +38,13 @@ public class Pawn extends ChessPiece {
 
             if (squareForMove instanceof EmptySquare) {
                 System.out.println("Вы не можете рубить так как на этом поле отсутствует фигура.");
-                GameLogic.movePiece(this);
+                movePiece(this);                                                                            //TODO лишнее?
             } else if (squareForMove.colour == this.colour) {
                 System.out.println("Вы не можете рубить фигуру своего цвета.");
-                GameLogic.movePiece(this);
-            } else if (squareForMove instanceof King) {
+                movePiece(this);
+            } else if (squareForMove instanceof King) {                                    //TODO заменить проверкой
                 System.out.println("Вы не можете рубить короля.");
-                GameLogic.movePiece(this);
+                movePiece(this);
             }
         }
     }

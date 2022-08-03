@@ -77,6 +77,12 @@ class ChessPiece {
     }
 
     public void checkIsThereObstacleAtEndPath(ChessPiece squareForMove) {
+        if (squareForMove.colour == walkingColour) {
+            System.out.println("На этой клетке находится ваша фигура.");
+            movePiece(this);
+        }
+        System.out.println("Прошёл 3");
+        checkIsMayPieceCapture(squareForMove);   //TODO лишнее?
     }
 
     public void checkIsMayPieceCapture(ChessPiece squareForMove) {
@@ -86,15 +92,19 @@ class ChessPiece {
     }  //TODO вероятно тоже лишний метод
 
     public void putPiece(ChessPiece squareForMove) {
+        ChessPiece bufferSquareForMove = squareForMove;
         chessBoard[squareForMove.row][squareForMove.col] = this;
 
         ChessPiece link =  new EmptySquare(this.row, this.col, " 　 ║");
         chessBoard[this.row][this.col] = link;
 
-        this.row = squareForMove.row;
-        this.col = squareForMove.col;
+        this.row = bufferSquareForMove.row;
+        this.col = bufferSquareForMove.col;
 
-        System.out.println(link.pieceIcon);
+        ChessBoard.printAllPieces();
+
+//        System.out.println(link.pieceIcon + " " + link.row + " " + link.col);
+//        System.out.println(this.pieceIcon + " " + this.row + " " + this.col);
 //        System.out.println();
     }
 }
