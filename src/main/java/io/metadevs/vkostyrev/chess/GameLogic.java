@@ -3,6 +3,7 @@ package io.metadevs.vkostyrev.chess;
 import java.util.Scanner;
 
 import static io.metadevs.vkostyrev.chess.ChessBoard.*;
+import static io.metadevs.vkostyrev.chess.ChessPiece.isPieceHere;
 
 //TODO реализовать пат, все виды ничьи тп
 
@@ -91,20 +92,15 @@ abstract public class GameLogic {
     }
 
     private static ChessPiece getChessboardSquare() {
-        boolean isSquarePositionInputCorrect;
         String squarePosition;
 
         do {
-            isSquarePositionInputCorrect = true;
+            isStepCorrect = true;
             squarePosition = new Scanner(System.in).nextLine();
-            isSquarePositionInputCorrect = checkSquarePositionInput(squarePosition);
-        } while (!isSquarePositionInputCorrect);
+            checkSquarePositionInput(squarePosition);
+        } while (!isStepCorrect);
 
-        ChessPiece selectedSquare = chessBoard[getFirstIndex(squarePosition)][getSecondIndex(squarePosition)];
-//        System.out.println(selectedSquare.row + " " + selectedSquare.col);   //todo удалить
-//        selectedSquare.row = getFirstIndex(squarePosition);
-//        selectedSquare.col = getSecondIndex(squarePosition);
-        return selectedSquare;
+        return chessBoard[getFirstIndex(squarePosition)][getSecondIndex(squarePosition)];
     }
 
     private static int getFirstIndex(String squarePosition) {
@@ -153,41 +149,33 @@ abstract public class GameLogic {
         }
     }
 
-    private static boolean checkSquarePositionInput(String squarePosition) {
-        boolean isSquarePositionInputCorrect;
-        isSquarePositionInputCorrect = checkInputtedSquarePositionLength(squarePosition);
-        isSquarePositionInputCorrect = checkInputtedSquarePositionVertical(squarePosition);
-        isSquarePositionInputCorrect = checkInputtedSquarePositionHorizontal(squarePosition);
-
-        if (!isSquarePositionInputCorrect)
+    private static void checkSquarePositionInput(String squarePosition) {
+        checkInputtedSquarePositionLength(squarePosition);
+        checkInputtedSquarePositionVertical(squarePosition);
+        checkInputtedSquarePositionHorizontal(squarePosition);
+        if (!isStepCorrect)
             System.out.println("Некорректный ввод координат. Пожалуйста повторите.");
-        return isSquarePositionInputCorrect;
     }
 
-    private static boolean checkInputtedSquarePositionLength(String squarePosition) {
+    private static void checkInputtedSquarePositionLength(String squarePosition) {
         if (squarePosition.length() != 2)
-            return false;
-        return true;
+            isStepCorrect = false;
     }
 
-    private static boolean checkInputtedSquarePositionHorizontal(String squarePosition) {
+    private static void checkInputtedSquarePositionHorizontal(String squarePosition) {
         if (squarePosition.charAt(1) != '1' && squarePosition.charAt(1) != '2'
                 && squarePosition.charAt(1) != '3' && squarePosition.charAt(1) != '4'
                 && squarePosition.charAt(1) != '5' && squarePosition.charAt(1) != '6'
-                && squarePosition.charAt(1) != '7' && squarePosition.charAt(1) != '8') {
-            return false;
-        }
-        return true;
+                && squarePosition.charAt(1) != '7' && squarePosition.charAt(1) != '8')
+            isStepCorrect = false;
     }
 
-    private static boolean checkInputtedSquarePositionVertical(String squarePosition) {
+    private static void checkInputtedSquarePositionVertical(String squarePosition) {
         if (squarePosition.charAt(0) != 'a' && squarePosition.charAt(0) != 'b'
                 && squarePosition.charAt(0) != 'c' && squarePosition.charAt(0) != 'd'
                 && squarePosition.charAt(0) != 'e' && squarePosition.charAt(0) != 'f'
-                && squarePosition.charAt(0) != 'g' && squarePosition.charAt(0) != 'h') {
-            return false;
-        }
-        return true;
+                && squarePosition.charAt(0) != 'g' && squarePosition.charAt(0) != 'h')
+            isStepCorrect = false;
     }
 
     private static void moveChecks(ChessPiece takenPiece) {
@@ -196,9 +184,7 @@ abstract public class GameLogic {
     }
 
     private static void takeChecks(ChessPiece takenPiece) {
-        boolean isTakeChecksSuccessful;
-
-        isTakeChecksSuccessful = ChessPiece.isPieceHere(takenPiece);
+        isPieceHere(takenPiece);
         takenPiece.isTakePieceMineColour();
         //TODO нельзя ставить откуда взял?
         //TODO проверка kingUnderAttack
