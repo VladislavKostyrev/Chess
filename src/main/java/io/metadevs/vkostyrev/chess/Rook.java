@@ -9,85 +9,105 @@ public class Rook extends ChessPiece {
     }
 
     @Override
-    public void checkIsMayPieceWalkThat(ChessPiece squareForMove) {
-        System.out.println("Прошёл 1");
-        if ((!(this.row == squareForMove.row) && (this.col != squareForMove.col))) {
-            System.out.println("Эта фигура не может так ходить.");
-
-            movePiece(this);
-        }
-        if ((!(this.col == squareForMove.col) && (this.row != squareForMove.row))) {
-            System.out.println("Эта фигура не может так ходить.");
-            movePiece(this);
-        }
-
-
-        System.out.println("Прошёл 1");
+    public boolean isCanPieceMove(ChessPiece squareForMove, boolean isMoveChecksSuccessful) {
+        isMoveChecksSuccessful = isMayPieceWalkThat(squareForMove);
+        isMoveChecksSuccessful = isThereObstacleAlongPath(squareForMove, isMoveChecksSuccessful);
+        return isMoveChecksSuccessful;
     }
 
     @Override
-    public void checkIsThereObstacleAlongPath(ChessPiece squareForMove) {
+    public boolean isMayPieceWalkThat(ChessPiece squareForMove) {
+        if (notSameSquare(squareForMove))   {
+            System.out.println("Эта фигура не ходить на ту же клетку.");
+            return false;
+        }
+        if (notSameColumn(!(this.col == squareForMove.col) && (this.row != squareForMove.row))) {
+            System.out.println("Эта фигура не может так ходить.");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean notSameSquare(ChessPiece squareForMove) {
+        return isSameRow(squareForMove) && notSameColumn(this.col != squareForMove.col);
+    }
+
+    private boolean notSameColumn(boolean col) {
+        return col;
+    }
+
+    /**
+     *
+     * @param squareForMove
+     * @return
+     */
+    private boolean isSameRow(ChessPiece squareForMove) {
+        return !notSameColumn(this.row == squareForMove.row);
+    }
+
+    @Override
+    public boolean isThereObstacleAlongPath(ChessPiece squareForMove, boolean isMoveChecksSuccessful) {
         if (this.col == squareForMove.col && this.row > squareForMove.row) {
-            checkIsThereObstacleForwardPath(squareForMove);
+            isMoveChecksSuccessful = checkIsThereObstacleForwardPath(squareForMove);
         }
         if (this.col == squareForMove.col && this.row < squareForMove.row) {
-            checkIsThereObstacleBackPath(squareForMove);
+            isMoveChecksSuccessful = checkIsThereObstacleBackPath(squareForMove);
         }
         if (this.col > squareForMove.col && this.row == squareForMove.row) {
-            checkIsThereObstacleLeftPath(squareForMove);
+            isMoveChecksSuccessful = checkIsThereObstacleLeftPath(squareForMove);
         }
         if (this.col < squareForMove.col && this.row == squareForMove.row) {
-            checkIsThereObstacleRightPath(squareForMove);
+            isMoveChecksSuccessful = checkIsThereObstacleRightPath(squareForMove);
         }
-        System.out.println("Прошёл 2");
+        return isMoveChecksSuccessful;
     }
 
-    @Override
-    public void checkIsThereObstacleForwardPath(ChessPiece squareForMove) {
+     private boolean checkIsThereObstacleForwardPath(ChessPiece squareForMove) {
         if (this.row != 0) {
             for (int i = this.row - 1; i > squareForMove.row; i--) {
-                if (!(chessBoard[i][this.col] instanceof EmptySquare)) {
+                if (!notSameColumn(chessBoard[i][this.col] instanceof EmptySquare)) {
                     System.out.println("На пути присутствует помеха.");
-                    movePiece(this);
+                    return false;
                 }
             }
         }
+        return true;
     }
 
-    @Override
-    public void checkIsThereObstacleBackPath(ChessPiece squareForMove) {
+    private boolean checkIsThereObstacleBackPath(ChessPiece squareForMove) {
         if (this.row != 7) {
             for (int i = this.row + 1; i < squareForMove.row; i++) {
-                if (!(chessBoard[i][this.col] instanceof EmptySquare)) {
+                if (!notSameColumn(chessBoard[i][this.col] instanceof EmptySquare)) {
                     System.out.println("На пути присутствует помеха.");
-                    movePiece(this);
+                    return false;
                 }
             }
         }
+        return true;
     }
 
-    @Override
-    public void checkIsThereObstacleLeftPath(ChessPiece squareForMove) {
+    private boolean checkIsThereObstacleLeftPath(ChessPiece squareForMove) {
         if (this.col != 0) {
             for (int i = this.col - 1; i > squareForMove.col; i--) {
-                if (!(chessBoard[this.row][i] instanceof EmptySquare)) {
+                if (!notSameColumn(chessBoard[this.row][i] instanceof EmptySquare)) {
                     System.out.println("На пути присутствует помеха.");
-                    movePiece(this);
+                    return false;
                 }
             }
         }
+        return true;
     }
 
-    @Override
-    public void checkIsThereObstacleRightPath(ChessPiece squareForMove) {
+    private boolean checkIsThereObstacleRightPath(ChessPiece squareForMove) {
         if (this.col != 7) {
             for (int i = this.col + 1; i < squareForMove.col; i++) {
-                if (!(chessBoard[this.row][i] instanceof EmptySquare)) {
+                if (!notSameColumn(chessBoard[this.row][i] instanceof EmptySquare)) {
                     System.out.println("На пути присутствует помеха.");
-                    movePiece(this);
+                    return false;
                 }
             }
         }
+        return true;
     }
 
     public void checkIsMayPieceCapture(ChessPiece squareForMove) {

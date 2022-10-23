@@ -10,7 +10,7 @@ public class ChessBoard {
         chessBoard[0][3] = new Queen(0,3,'b', " ♕ ║");
         chessBoard[0][4] = new King(0,4,'b', " ♔ ║");
         chessBoard[0][5] = new Bishop(0,5,'b', " ♗ ║");
-        chessBoard[0][6] = new Knight(0,6,'b', " ▱ ║");
+        chessBoard[0][6] = new Knight(0,6,'b', " ▱ ║"); //и
         chessBoard[0][7] = new Rook(0,7,'b', " ♖ ║");
 
         chessBoard[1][0] = new Pawn(1,0,'b', " ♙ ║");
@@ -21,8 +21,6 @@ public class ChessBoard {
         chessBoard[1][5] = new Pawn(1,5,'b', " ♙ ║");
         chessBoard[1][6] = new Pawn(1,6,'b', " ♙ ║");
         chessBoard[1][7] = new Pawn(1,7,'b', " ♙ ║");
-
-        //TODO можно ли сделать всего один объект и везде вставлять на него ссылку?
 
         chessBoard[2][0] = new EmptySquare(2, 0," 　 ║");
         chessBoard[2][1] = new EmptySquare(2, 1," 　 ║");
@@ -78,10 +76,9 @@ public class ChessBoard {
 
     public void getFirstIndexPiece(ChessPiece chessPiece) {
         //TODO что это? удалить?
-
     }
 
-    public static void printChessBoard () {
+    public static void showChessBoard() {
         System.out.print(" ╔════════════════════════════════════╗");
 
         for (int i = 0, j = 8; i < 8; i++, j--) {
@@ -97,7 +94,7 @@ public class ChessBoard {
         System.out.println("   A    B    C   D    E    F   G    H");
     }
 
-    public static void printAllPieces() {
+    public static void printAllPieces() {      //TODO удалить в конце
         for (int i = 5; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 System.out.println(chessBoard[i][j].pieceIcon + " " + chessBoard[i][j].row + "." + chessBoard[i][j].col + " " + i + "." + j);

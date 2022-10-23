@@ -1,6 +1,5 @@
 package io.metadevs.vkostyrev.chess;
 
-import static io.metadevs.vkostyrev.chess.ChessBoard.chessBoard;
 import static io.metadevs.vkostyrev.chess.GameLogic.movePiece;
 import static io.metadevs.vkostyrev.chess.GameLogic.walkingColour;
 
@@ -10,7 +9,18 @@ public class Pawn extends ChessPiece {
     }
 
     @Override
-    public void checkIsMayPieceWalkThat(ChessPiece squareForMove) {
+    public void isPieceNotBlocked() {
+
+    }
+
+    @Override
+    public boolean isCanPieceMove(ChessPiece squareForMove, boolean isMoveChecksSuccessful) {
+        isMoveChecksSuccessful = isMayPieceWalkThat(squareForMove);
+        return isMoveChecksSuccessful;
+    }
+
+    @Override
+    public boolean isMayPieceWalkThat(ChessPiece squareForMove) {
         //TODO проверка если впереди есть помеха (вероятнее будет в другом методе)
         //TODO реализовать взятие на проходе
         //TODO реализовать первый ход на две клетки
@@ -19,23 +29,32 @@ public class Pawn extends ChessPiece {
         if (walkingColour == 'w') {
             if ((squareForMove.row != this.row - 1) || (squareForMove.col < this.col - 1 || squareForMove.col > this.col + 1)) {
                 System.out.println("Эта фигура не может так ходить.");
-                movePiece(this);
+                return false;
             }
+            return true;
         }
         if (walkingColour == 'b') {
             if ((squareForMove.row != this.row + 1) || (squareForMove.col < this.col - 1 || squareForMove.col > this.col + 1)) {
                 System.out.println("Эта фигура не может так ходить.");
-                movePiece(this);
+                return false;
             }
+            return true;
         }
 
-        checkIsMayPieceCapture(squareForMove);
+//        checkIsMayPieceCapture(squareForMove);
+        return true;
     }
+
+    @Override
+    public boolean isThereObstacleAlongPath(ChessPiece squareForMove, boolean isMoveChecksSuccessful) {
+        //TODO этот метод вызывается только при реализации взятия на проходе
+        return true;
+    }
+
 
     @Override
     public void checkIsMayPieceCapture(ChessPiece squareForMove) {
         if ((squareForMove.col == this.col - 1) || (squareForMove.col == this.col + 1)) {
-
             if (squareForMove instanceof EmptySquare) {
                 System.out.println("Вы не можете рубить так как на этом поле отсутствует фигура.");
                 movePiece(this);                                                                            //TODO лишнее?
@@ -49,9 +68,4 @@ public class Pawn extends ChessPiece {
         }
     }
 
-//    @Override
-    //TODO этот метод вызывается только при реализации взятия на проходе
-//    public boolean isThereObstacleAlongPath(ChessPiece squareForMove) {
-//        return false;
-//    }
 }
