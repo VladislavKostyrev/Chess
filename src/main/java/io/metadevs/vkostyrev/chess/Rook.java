@@ -9,111 +9,68 @@ public class Rook extends ChessPiece {
     }
 
     @Override
-    public boolean isCanPieceMove(ChessPiece squareForMove, boolean isMoveChecksSuccessful) {
-        isMoveChecksSuccessful = isMayPieceWalkThat(squareForMove);
-        isMoveChecksSuccessful = isThereObstacleAlongPath(squareForMove, isMoveChecksSuccessful);
-        return isMoveChecksSuccessful;
+    public void isCanPieceMove(ChessPiece squareForMove) {
+        checkCanPieceWalkThat(squareForMove);
+        checkThereObstacleAlongPath(squareForMove);
     }
 
     @Override
-    public boolean isMayPieceWalkThat(ChessPiece squareForMove) {
-        if (notSameSquare(squareForMove))   {
-            System.out.println("Эта фигура не ходить на ту же клетку.");
-            return false;
-        }
-        if (notSameColumn(!(this.col == squareForMove.col) && (this.row != squareForMove.row))) {
+    public void checkCanPieceWalkThat(ChessPiece squareForMove) {
+        if ((this.col != squareForMove.col) && (this.row != squareForMove.row)) {
             System.out.println("Эта фигура не может так ходить.");
-            return false;
+            isActionCorrect = false;
         }
-        return true;
-    }
-
-    private boolean notSameSquare(ChessPiece squareForMove) {
-        return isSameRow(squareForMove) && notSameColumn(this.col != squareForMove.col);
-    }
-
-    private boolean notSameColumn(boolean col) {
-        return col;
-    }
-
-    /**
-     *
-     * @param squareForMove
-     * @return
-     */
-    private boolean isSameRow(ChessPiece squareForMove) {
-        return !notSameColumn(this.row == squareForMove.row);
     }
 
     @Override
-    public boolean isThereObstacleAlongPath(ChessPiece squareForMove, boolean isMoveChecksSuccessful) {
+    public void checkThereObstacleAlongPath(ChessPiece squareForMove) {
         if (this.col == squareForMove.col && this.row > squareForMove.row) {
-            isMoveChecksSuccessful = checkIsThereObstacleForwardPath(squareForMove);
+            checkThereObstacleForwardPath(squareForMove);
         }
         if (this.col == squareForMove.col && this.row < squareForMove.row) {
-            isMoveChecksSuccessful = checkIsThereObstacleBackPath(squareForMove);
+            checkThereObstacleBackPath(squareForMove);
         }
         if (this.col > squareForMove.col && this.row == squareForMove.row) {
-            isMoveChecksSuccessful = checkIsThereObstacleLeftPath(squareForMove);
+            checkThereObstacleLeftPath(squareForMove);
         }
         if (this.col < squareForMove.col && this.row == squareForMove.row) {
-            isMoveChecksSuccessful = checkIsThereObstacleRightPath(squareForMove);
+            checkThereObstacleRightPath(squareForMove);
         }
-        return isMoveChecksSuccessful;
     }
 
-     private boolean checkIsThereObstacleForwardPath(ChessPiece squareForMove) {
-        if (this.row != 0) {
-            for (int i = this.row - 1; i > squareForMove.row; i--) {
-                if (!notSameColumn(chessBoard[i][this.col] instanceof EmptySquare)) {
-                    System.out.println("На пути присутствует помеха.");
-                    return false;
-                }
+    private void checkThereObstacleForwardPath(ChessPiece squareForMove) {
+        for (int i = this.row - 1; i > squareForMove.row; i--) {
+            if (!(chessBoard[i][this.col] instanceof EmptySquare)) {
+                System.out.println("На пути присутствует помеха.");
+                isActionCorrect = false;
             }
         }
-        return true;
     }
 
-    private boolean checkIsThereObstacleBackPath(ChessPiece squareForMove) {
-        if (this.row != 7) {
-            for (int i = this.row + 1; i < squareForMove.row; i++) {
-                if (!notSameColumn(chessBoard[i][this.col] instanceof EmptySquare)) {
-                    System.out.println("На пути присутствует помеха.");
-                    return false;
-                }
+    private void checkThereObstacleBackPath(ChessPiece squareForMove) {
+        for (int i = this.row + 1; i < squareForMove.row; i++) {
+            if (!(chessBoard[i][this.col] instanceof EmptySquare)) {
+                System.out.println("На пути присутствует помеха.");
+                isActionCorrect = false;
             }
         }
-        return true;
     }
 
-    private boolean checkIsThereObstacleLeftPath(ChessPiece squareForMove) {
-        if (this.col != 0) {
-            for (int i = this.col - 1; i > squareForMove.col; i--) {
-                if (!notSameColumn(chessBoard[this.row][i] instanceof EmptySquare)) {
-                    System.out.println("На пути присутствует помеха.");
-                    return false;
-                }
+    private void checkThereObstacleLeftPath(ChessPiece squareForMove) {
+        for (int i = this.col - 1; i > squareForMove.col; i--) {
+            if (!(chessBoard[this.row][i] instanceof EmptySquare)) {
+                System.out.println("На пути присутствует помеха.");
+                isActionCorrect = false;
             }
         }
-        return true;
     }
 
-    private boolean checkIsThereObstacleRightPath(ChessPiece squareForMove) {
-        if (this.col != 7) {
-            for (int i = this.col + 1; i < squareForMove.col; i++) {
-                if (!notSameColumn(chessBoard[this.row][i] instanceof EmptySquare)) {
-                    System.out.println("На пути присутствует помеха.");
-                    return false;
-                }
+    private void checkThereObstacleRightPath(ChessPiece squareForMove) {
+        for (int i = this.col + 1; i < squareForMove.col; i++) {
+            if (!(chessBoard[this.row][i] instanceof EmptySquare)) {
+                System.out.println("На пути присутствует помеха.");
+                isActionCorrect = false;
             }
-        }
-        return true;
-    }
-
-    public void checkIsMayPieceCapture(ChessPiece squareForMove) {
-        if (squareForMove instanceof King) {
-            System.out.println("Вы не можете рубить вражеского короля!");
-            movePiece(this);
         }
     }
 }

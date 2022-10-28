@@ -1,71 +1,48 @@
 package io.metadevs.vkostyrev.chess;
 
-import static io.metadevs.vkostyrev.chess.GameLogic.movePiece;
-import static io.metadevs.vkostyrev.chess.GameLogic.walkingColour;
+import static io.metadevs.vkostyrev.chess.GameLogic.isActionCorrect;
 
 public class Pawn extends ChessPiece {
-    Pawn (int row, int col, char colour, String pieceIcon) {
+    Pawn(int row, int col, char colour, String pieceIcon) {
         super(row, col, colour, pieceIcon);
     }
 
     @Override
-    public void isPieceNotBlocked() {
-
+    public void isCanPieceMove(ChessPiece squareForMove) {
+        checkCanPieceWalkThat(squareForMove);
     }
 
     @Override
-    public boolean isCanPieceMove(ChessPiece squareForMove, boolean isMoveChecksSuccessful) {
-        isMoveChecksSuccessful = isMayPieceWalkThat(squareForMove);
-        return isMoveChecksSuccessful;
-    }
-
-    @Override
-    public boolean isMayPieceWalkThat(ChessPiece squareForMove) {
-        //TODO проверка если впереди есть помеха (вероятнее будет в другом методе)
-        //TODO реализовать взятие на проходе
+    public void checkCanPieceWalkThat(ChessPiece squareForMove) {
         //TODO реализовать первый ход на две клетки
+        //TODO реализовать взятие на проходе
         //TODO реализовать превращение пекши в другую фигуру (как дошла до края доски врага)
+        isActionCorrect = false;
 
-        if (walkingColour == 'w') {
-            if ((squareForMove.row != this.row - 1) || (squareForMove.col < this.col - 1 || squareForMove.col > this.col + 1)) {
-                System.out.println("Эта фигура не может так ходить.");
-                return false;
-            }
-            return true;
-        }
-        if (walkingColour == 'b') {
-            if ((squareForMove.row != this.row + 1) || (squareForMove.col < this.col - 1 || squareForMove.col > this.col + 1)) {
-                System.out.println("Эта фигура не может так ходить.");
-                return false;
-            }
-            return true;
+        if (this.colour == 'w') {
+            if (squareForMove.row == this.row - 1 && this.col == squareForMove.col && squareForMove instanceof EmptySquare)
+                isActionCorrect = true;
+            if (squareForMove.row == this.row - 1 && this.col - squareForMove.col == 1 && (this.col != squareForMove.colour && !(squareForMove instanceof EmptySquare)))
+                isActionCorrect = true;
+            if (squareForMove.row == this.row - 1 && this.col - squareForMove.col == -1 && (this.col != squareForMove.colour && !(squareForMove instanceof EmptySquare)))
+                isActionCorrect = true;
         }
 
-//        checkIsMayPieceCapture(squareForMove);
-        return true;
+        if (this.colour == 'b') {
+            if (squareForMove.row == this.row + 1 && this.col == squareForMove.col && squareForMove instanceof EmptySquare)
+                isActionCorrect = true;
+            if (squareForMove.row == this.row + 1 && this.col - squareForMove.col == 1 && (this.col != squareForMove.colour && !(squareForMove instanceof EmptySquare)))
+                isActionCorrect = true;
+            if (squareForMove.row == this.row + 1 && this.col - squareForMove.col == -1 && (this.col != squareForMove.colour && !(squareForMove instanceof EmptySquare)))
+                isActionCorrect = true;
+        }
+
+        if (!isActionCorrect)
+            System.out.println("Эта фигура не может так ходить.");
     }
 
     @Override
-    public boolean isThereObstacleAlongPath(ChessPiece squareForMove, boolean isMoveChecksSuccessful) {
+    public void checkThereObstacleAlongPath(ChessPiece squareForMove) {
         //TODO этот метод вызывается только при реализации взятия на проходе
-        return true;
     }
-
-
-    @Override
-    public void checkIsMayPieceCapture(ChessPiece squareForMove) {
-        if ((squareForMove.col == this.col - 1) || (squareForMove.col == this.col + 1)) {
-            if (squareForMove instanceof EmptySquare) {
-                System.out.println("Вы не можете рубить так как на этом поле отсутствует фигура.");
-                movePiece(this);                                                                            //TODO лишнее?
-            } else if (squareForMove.colour == this.colour) {
-                System.out.println("Вы не можете рубить фигуру своего цвета.");
-                movePiece(this);
-            } else if (squareForMove instanceof King) {                                    //TODO заменить проверкой
-                System.out.println("Вы не можете рубить короля.");
-                movePiece(this);
-            }
-        }
-    }
-
 }

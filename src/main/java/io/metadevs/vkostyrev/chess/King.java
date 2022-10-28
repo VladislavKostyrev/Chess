@@ -1,65 +1,41 @@
 package io.metadevs.vkostyrev.chess;
 
-public class King extends ChessPiece{
-    //TODO написать логику для
+import static io.metadevs.vkostyrev.chess.GameLogic.isActionCorrect;
+
+public class King extends ChessPiece{                         //todo добавить метод что нельзя ходить под бой
     King (int row, int col, char colour, String pieceIcon) {
         super(row, col, colour, pieceIcon);
     }
 
     @Override
-    public void isPieceNotBlocked() {
-
+    public void isCanPieceMove(ChessPiece squareForMove) {
+        checkCanPieceWalkThat(squareForMove);
+        checkThereObstacleAlongPath(squareForMove);
     }
 
     @Override
-    public boolean isCanPieceMove(ChessPiece squareForMove, boolean isMoveChecksSuccessful) {
-        return false;
+    public void checkCanPieceWalkThat(ChessPiece squareForMove) {               //todo вынести в отдельные методы
+        isActionCorrect = false;
+
+        if ((this.col == squareForMove.col) && (this.row - squareForMove.row == 1 || this.row - squareForMove.row == -1))
+            isActionCorrect = true;
+        if ((this.col - squareForMove.col == 1 || this.col - squareForMove.col == -1) && (this.row == squareForMove.row))
+            isActionCorrect = true;
+
+        if (this.col - squareForMove.col == 1 && this.row - squareForMove.row == 1)
+            isActionCorrect = true;
+        if (this.col - squareForMove.col == -1 && this.row - squareForMove.row == 1)
+            isActionCorrect = true;
+        if (this.col - squareForMove.col == -1 && this.row - squareForMove.row == -1)
+            isActionCorrect = true;
+        if (this.col - squareForMove.col == 1 && this.row - squareForMove.row == -1)
+            isActionCorrect = true;
+
+        if (!isActionCorrect)
+            System.out.println("Эта фигура не может так ходить.");
     }
 
     @Override
-    public boolean isMayPieceWalkThat(ChessPiece takenPiece) {
-        return false;
-    }
-
-    @Override
-    public boolean isThereObstacleAlongPath(ChessPiece squareForMove, boolean isMoveChecksSuccessful) {
-        return false;
-    }
-
-    @Override
-    public void checkIsMayPieceCapture(ChessPiece squareForMove) {
-
-    }
-
-    public void checkIsThereObstacleForwardPath(ChessPiece squareForMove) {
-
-    }
-
-    public void checkIsThereObstacleBackPath(ChessPiece squareForMove) {
-
-    }
-
-    public void checkIsThereObstacleLeftPath(ChessPiece squareForMove) {
-
-    }
-
-    public void checkIsThereObstacleRightPath(ChessPiece squareForMove) {
-
-    }
-
-    public void checkIsThereObstacleForwardRightPath(ChessPiece squareForMove) {
-
-    }
-
-    public void checkIsThereObstacleForwardLeftPath(ChessPiece squareForMove) {
-
-    }
-
-    public void checkIsThereObstacleBackLeftPath(ChessPiece squareForMove) {
-
-    }
-
-    public void checkIsThereObstacleBackRightPath(ChessPiece squareForMove) {
-
+    public void checkThereObstacleAlongPath(ChessPiece squareForMove) {
     }
 }

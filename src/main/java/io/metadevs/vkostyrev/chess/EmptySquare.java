@@ -7,28 +7,18 @@ public class EmptySquare extends ChessPiece {
     }
 
     @Override
-    public void isPieceNotBlocked() {
-
+    public void checkPieceNotBlocked() {
     }
 
     @Override
-    public boolean isCanPieceMove(ChessPiece squareForMove, boolean isMoveChecksSuccessful) {
-        return false;
+    public void isCanPieceMove(ChessPiece squareForMove) {
     }
 
     @Override
-    public boolean isMayPieceWalkThat(ChessPiece takenPiece) {
-        return false;
+    public void checkCanPieceWalkThat(ChessPiece takenPiece) {
     }
 
     @Override
-    public boolean isThereObstacleAlongPath(ChessPiece squareForMove, boolean isMoveChecksSuccessful) {
-        return false;
+    public void checkThereObstacleAlongPath(ChessPiece squareForMove){
     }
-
-    @Override
-    public void checkIsMayPieceCapture(ChessPiece squareForMove) {
-
-    }
-
 }

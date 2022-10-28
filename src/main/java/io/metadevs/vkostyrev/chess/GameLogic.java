@@ -3,7 +3,6 @@ package io.metadevs.vkostyrev.chess;
 import java.util.Scanner;
 
 import static io.metadevs.vkostyrev.chess.ChessBoard.*;
-import static io.metadevs.vkostyrev.chess.ChessPiece.isPieceHere;
 
 //TODO реализовать пат, все виды ничьи тп
 
@@ -11,16 +10,13 @@ import static io.metadevs.vkostyrev.chess.ChessPiece.isPieceHere;
 //TODO сделать запрос истории в виде вывода на экран досок (реализация с помощью хранения принтов досок в массиве)
 
 abstract public class GameLogic {
-    public static int countGameSteps = 0;
-    public static boolean win = false;
+    public static int countGameSteps;
+    public static boolean win;
     public static char walkingColour;
-    public static boolean isStepCorrect;
+    public static boolean isActionCorrect;                //todo нейминг
+    public static String errorMessage;
 
-    //todo в конце партии обнулить все статик переменные
-
-    public static void playGame() {
-        //TODO сделать класс Game(партия) и создать при новой игре его объект, дать классу поля,  чтобы методы ниже не были static
-
+    public static void playGame() {                       //TODO сделать класс Game(партия) и создать при новой игре его объект, дать классу поля, чтобы методы ниже не были static?
         showStartInfo();
         assembleChessBoard();
 
@@ -28,8 +24,28 @@ abstract public class GameLogic {
             makeStep();
         }
 
-        System.out.println("Спасибо за игру.");
-        //TODO предложить еще партию
+        repeatOrExit();
+    }
+
+    public static void repeatOrExit() {
+        String answer;
+        System.out.println("Спасибо за игру." +
+                "Ещё партию? Введите \"Да\" или \"Нет\" и нажмите Enter.");
+        do {
+            isActionCorrect = true;
+            answer = new Scanner(System.in).nextLine();
+            checkCorrectnessAnswer(answer);
+        } while (isActionCorrect);
+
+        if (answer.equals("Да"))
+            playGame();
+    }
+
+    private static void checkCorrectnessAnswer(String answer) {
+        if (!answer.equals("Да") && !answer.equals("Нет")) {
+            System.out.println("Некорректный ввод. Пожалуйста, введите \"Да\" или \"Нет\" и нажмите Enter.");
+            isActionCorrect = false;
+        }
     }
 
     private static void showStartInfo() {
@@ -49,12 +65,12 @@ abstract public class GameLogic {
     }
 
     public static void makeStep() {
-        determineWalkingColour();
+        showChessBoard();
+//        determineWalkingColour();
         ChessPiece takenPiece = takePiece();
         movePiece(takenPiece);
         checkGameWin();                                //TODO добавить реализацию
         countGameSteps++;
-        showChessBoard();
     }
 
     public static void determineWalkingColour() {
@@ -71,11 +87,11 @@ abstract public class GameLogic {
         ChessPiece takenPiece;
 
         do {
-            isStepCorrect = true;
+            isActionCorrect = true;
             System.out.print("Взять фигуру с поля: ");
             takenPiece = getChessboardSquare();                         //todo нейминг метода
             takeChecks(takenPiece);
-        } while (!isStepCorrect);
+        } while (!isActionCorrect);
         return takenPiece;
     }
 
@@ -83,11 +99,11 @@ abstract public class GameLogic {
         ChessPiece squareForMove;
 
         do {
-            isStepCorrect = true;
+            isActionCorrect = true;
             System.out.print("Поставить фигуру на поле: ");
             squareForMove = getChessboardSquare();                         //todo нейминг метода
-            moveChecks(takenPiece);
-        } while (!isStepCorrect);
+            moveChecks(takenPiece, squareForMove);
+        } while (!isActionCorrect);
         takenPiece.putPiece(squareForMove);
     }
 
@@ -95,10 +111,10 @@ abstract public class GameLogic {
         String squarePosition;
 
         do {
-            isStepCorrect = true;
+            isActionCorrect = true;
             squarePosition = new Scanner(System.in).nextLine();
             checkSquarePositionInput(squarePosition);
-        } while (!isStepCorrect);
+        } while (!isActionCorrect);
 
         return chessBoard[getFirstIndex(squarePosition)][getSecondIndex(squarePosition)];
     }
@@ -153,13 +169,13 @@ abstract public class GameLogic {
         checkInputtedSquarePositionLength(squarePosition);
         checkInputtedSquarePositionVertical(squarePosition);
         checkInputtedSquarePositionHorizontal(squarePosition);
-        if (!isStepCorrect)
+        if (!isActionCorrect)
             System.out.println("Некорректный ввод координат. Пожалуйста повторите.");
     }
 
     private static void checkInputtedSquarePositionLength(String squarePosition) {
         if (squarePosition.length() != 2)
-            isStepCorrect = false;
+            isActionCorrect = false;
     }
 
     private static void checkInputtedSquarePositionHorizontal(String squarePosition) {
@@ -167,7 +183,7 @@ abstract public class GameLogic {
                 && squarePosition.charAt(1) != '3' && squarePosition.charAt(1) != '4'
                 && squarePosition.charAt(1) != '5' && squarePosition.charAt(1) != '6'
                 && squarePosition.charAt(1) != '7' && squarePosition.charAt(1) != '8')
-            isStepCorrect = false;
+            isActionCorrect = false;
     }
 
     private static void checkInputtedSquarePositionVertical(String squarePosition) {
@@ -175,23 +191,33 @@ abstract public class GameLogic {
                 && squarePosition.charAt(0) != 'c' && squarePosition.charAt(0) != 'd'
                 && squarePosition.charAt(0) != 'e' && squarePosition.charAt(0) != 'f'
                 && squarePosition.charAt(0) != 'g' && squarePosition.charAt(0) != 'h')
-            isStepCorrect = false;
-    }
-
-    private static void moveChecks(ChessPiece takenPiece) {
-        //todo есть ли препятствие по пути и в конце
-        //todo проверка не сьели ли короляч1
+            isActionCorrect = false;
     }
 
     private static void takeChecks(ChessPiece takenPiece) {
-        isPieceHere(takenPiece);
-        takenPiece.isTakePieceMineColour();
-        //TODO нельзя ставить откуда взял?
-        //TODO проверка kingUnderAttack
-        //TODO проверка не заблокирована ли фигура
+        errorMessage = "";
+
+        takenPiece.checkPieceHere();
+        takenPiece.checkPieceMineColour();
+        takenPiece.checkPieceNotBlocked();
+        takenPiece.checkKingUnderAttack();
+
+        System.out.println(errorMessage);
     }
 
-    public static void checkGameWin() {
+    private static void moveChecks(ChessPiece takenPiece, ChessPiece squareForMove) {
+        takenPiece.isCanPieceMove(squareForMove);
+        takenPiece.checkThereObstacleAtEndPath(squareForMove);
+        takenPiece.checkPieceNotBeKing(squareForMove);                           //todo нейминг
+    }
+
+    public static void checkGameWin() {                        //todo закончить
         //TODO проверка мата вражескому королю
+    }
+
+    public static void fillErrorMessage(String eErrorMessage) {
+        if (errorMessage.length() > 0)
+            return;
+        errorMessage = eErrorMessage;
     }
 }

@@ -4,7 +4,7 @@ import static io.metadevs.vkostyrev.chess.ChessBoard.chessBoard;
 import static io.metadevs.vkostyrev.chess.GameLogic.*;
 
 abstract class ChessPiece {
-    //TODO добавить геттеры и сеттеры
+    //TODO добавить геттеры и сеттеры?
     char colour;
     int row;
     int col;
@@ -23,52 +23,47 @@ abstract class ChessPiece {
         this.pieceIcon = pieceIcon;
     }
 
-    public static boolean isPieceHere(ChessPiece takenPiece) {
-        if (takenPiece instanceof EmptySquare) {
-            System.out.println("В этом поле отсутствует фигура. Повторите ввод.");
-            return false;
+    public void checkPieceHere() {
+        if (this instanceof EmptySquare) {
+            fillErrorMessage("В этом поле отсутствует фигура. Повторите ввод.");
+            isActionCorrect = false;
         }
-        return true;
     }
 
-    //TODO сделать boolean
-    public void isTakePieceMineColour() {
+    public void checkPieceMineColour() {
         if (this.colour != GameLogic.walkingColour) {
-            System.out.println("Вы пытаетесь взять фигуру не вашего цвета. Повторите ввод.");
-            takePiece();
+            fillErrorMessage("Вы пытаетесь взять фигуру не вашего цвета. Повторите ввод.");
+            isActionCorrect = false;
         }
     }
 
-    //TODO сделать boolean
-    public void isKingUnderAttack() {
+    public void checkKingUnderAttack() {    //todo реализовать метод
     }
 
-    //TODO сделать boolean
-    public void isPieceNotBlocked() {
+    public void checkPieceNotBlocked() {    //todo реализовать метод
     }
 
-    abstract public boolean isCanPieceMove(ChessPiece squareForMove, boolean isMoveChecksSuccessful);
+    abstract public void isCanPieceMove(ChessPiece squareForMove);        //todo он точно нужен?
 
-    abstract public boolean isMayPieceWalkThat(ChessPiece takenPiece);
+    abstract public void checkCanPieceWalkThat(ChessPiece squareForMove);
 
-    abstract public boolean isThereObstacleAlongPath(ChessPiece squareForMove, boolean isMoveChecksSuccessful);
+    abstract public void checkThereObstacleAlongPath(ChessPiece squareForMove);
 
-
-    public boolean isThereObstacleAtEndPath(ChessPiece squareForMove) {
+    public void checkThereObstacleAtEndPath(ChessPiece squareForMove) {
         if (squareForMove.colour == walkingColour) {
             System.out.println("На этой клетке находится ваша фигура.");
-            return false;
+            isActionCorrect = false;
         }
-        return true;
-//        checkIsMayPieceCapture(squareForMove);   //TODO лишнее?
     }
 
-    abstract public void checkIsMayPieceCapture(ChessPiece squareForMove);
+    public void checkPieceNotBeKing(ChessPiece squareForMove) {      //todo нейминг
+        if (squareForMove instanceof King) {
+            System.out.println("Вы не можете рубить короля!");
+            isActionCorrect = false;
+        }
+    }
 
-    public void captureEnemyPiece(ChessPiece squareForMove) {
-    }  //TODO вероятно лишний метод
-
-    public void putPiece(ChessPiece squareForMove) {                          //todo важно, проверить как работает!!!
+    public void putPiece(ChessPiece squareForMove) {
         chessBoard[squareForMove.row][squareForMove.col] = this;
 
         ChessPiece link = new EmptySquare(this.row, this.col, " 　 ║");
