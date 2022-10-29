@@ -9,7 +9,7 @@ public class Queen extends ChessPiece {
     }
 
     @Override
-    public void isCanPieceMove(ChessPiece squareForMove) {
+    public void checkCanPieceMove(ChessPiece squareForMove) {
         checkCanPieceWalkThat(squareForMove);
         checkThereObstacleAlongPath(squareForMove);
     }

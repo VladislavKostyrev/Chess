@@ -8,7 +8,7 @@ public class King extends ChessPiece{                         //todo добав�
     }
 
     @Override
-    public void isCanPieceMove(ChessPiece squareForMove) {
+    public void checkCanPieceMove(ChessPiece squareForMove) {
         checkCanPieceWalkThat(squareForMove);
         checkThereObstacleAlongPath(squareForMove);
     }
@@ -38,4 +38,14 @@ public class King extends ChessPiece{                         //todo добав�
     @Override
     public void checkThereObstacleAlongPath(ChessPiece squareForMove) {
     }
+
+    public void checkSquareForMoveUnderAttack(ChessPiece squareForMove) {
+        //  проверка есть ли по гор-ли и вер-ли тура или ферзь
+        // проверка есть ли на диагоналях слон, ферзь, пешка или король на первой клетке поиска
+        // проверка коней, что бью это поле
+    }
 }
+
+//check проверяет клетку на то, не является ли эта клетка под боем
+//check не попадёт ли король при ходе фигуры под бой, проверяет клетку, где стоит король на шах
+//check game wim проверка всех полей вокруг короля и поле на котором он стоит

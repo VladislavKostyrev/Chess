@@ -35,7 +35,7 @@ abstract public class GameLogic {
             isActionCorrect = true;
             answer = new Scanner(System.in).nextLine();
             checkCorrectnessAnswer(answer);
-        } while (isActionCorrect);
+        } while (!isActionCorrect);
 
         if (answer.equals("Да"))
             playGame();
@@ -87,10 +87,10 @@ abstract public class GameLogic {
         ChessPiece takenPiece;
 
         do {
-            isActionCorrect = true;
+            isActionCorrect = true;                                       //мб чек корект?
             System.out.print("Взять фигуру с поля: ");
-            takenPiece = getChessboardSquare();                         //todo нейминг метода
-            takeChecks(takenPiece);
+            takenPiece = appointChessboardSquare();                         //todo нейминг метода
+            doChecksForTake(takenPiece);
         } while (!isActionCorrect);
         return takenPiece;
     }
@@ -101,13 +101,13 @@ abstract public class GameLogic {
         do {
             isActionCorrect = true;
             System.out.print("Поставить фигуру на поле: ");
-            squareForMove = getChessboardSquare();                         //todo нейминг метода
+            squareForMove = appointChessboardSquare();                         //todo нейминг метода
             moveChecks(takenPiece, squareForMove);
         } while (!isActionCorrect);
         takenPiece.putPiece(squareForMove);
     }
 
-    private static ChessPiece getChessboardSquare() {
+    private static ChessPiece appointChessboardSquare() {
         String squarePosition;
 
         do {
@@ -182,31 +182,32 @@ abstract public class GameLogic {
         if (squarePosition.charAt(1) != '1' && squarePosition.charAt(1) != '2'
                 && squarePosition.charAt(1) != '3' && squarePosition.charAt(1) != '4'
                 && squarePosition.charAt(1) != '5' && squarePosition.charAt(1) != '6'
-                && squarePosition.charAt(1) != '7' && squarePosition.charAt(1) != '8')
+                && squarePosition.charAt(1) != '7' && squarePosition.charAt(1) != '8') {
             isActionCorrect = false;
+        }
     }
 
     private static void checkInputtedSquarePositionVertical(String squarePosition) {
         if (squarePosition.charAt(0) != 'a' && squarePosition.charAt(0) != 'b'
                 && squarePosition.charAt(0) != 'c' && squarePosition.charAt(0) != 'd'
                 && squarePosition.charAt(0) != 'e' && squarePosition.charAt(0) != 'f'
-                && squarePosition.charAt(0) != 'g' && squarePosition.charAt(0) != 'h')
+                && squarePosition.charAt(0) != 'g' && squarePosition.charAt(0) != 'h') {
             isActionCorrect = false;
+        }
     }
 
-    private static void takeChecks(ChessPiece takenPiece) {
+    private static void doChecksForTake(ChessPiece takenPiece) {
         errorMessage = "";
 
-        takenPiece.checkPieceHere();
-        takenPiece.checkPieceMineColour();
+        takenPiece.checkPiecePresence();
+        takenPiece.checkPieceColourCorrect();
         takenPiece.checkPieceNotBlocked();
         takenPiece.checkKingUnderAttack();
-
         System.out.println(errorMessage);
     }
 
     private static void moveChecks(ChessPiece takenPiece, ChessPiece squareForMove) {
-        takenPiece.isCanPieceMove(squareForMove);
+        takenPiece.checkCanPieceMove(squareForMove);
         takenPiece.checkThereObstacleAtEndPath(squareForMove);
         takenPiece.checkPieceNotBeKing(squareForMove);                           //todo нейминг
     }
@@ -218,6 +219,6 @@ abstract public class GameLogic {
     public static void fillErrorMessage(String eErrorMessage) {
         if (errorMessage.length() > 0)
             return;
-        errorMessage = eErrorMessage;
+        errorMessage = eErrorMessage;                                 //todo нейминг
     }
 }

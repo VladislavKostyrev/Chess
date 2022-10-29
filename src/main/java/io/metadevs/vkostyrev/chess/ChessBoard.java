@@ -3,7 +3,7 @@ package io.metadevs.vkostyrev.chess;
 import static io.metadevs.vkostyrev.chess.GameLogic.*;
 
 public class ChessBoard {
-    static ChessPiece[][] chessBoard = new ChessPiece[8][8];
+    public static ChessPiece[][] chessBoard = new ChessPiece[8][8];
 
     public static void assembleChessBoard() {
         win = false;
@@ -27,7 +27,10 @@ public class ChessBoard {
         chessBoard[1][4] = new Pawn(1,4,'b', " ♙ ║");
         chessBoard[1][5] = new Pawn(1,5,'b', " ♙ ║");
 //        chessBoard[1][6] = new Pawn(1,6,'b', " ♙ ║");
-        chessBoard[1][7] = new Pawn(1,7,'b', " ♙ ║");
+
+//        chessBoard[1][7] = new Pawn(1,7,'b', " ♙ ║");
+        chessBoard[1][7] = new Pawn(1,7,'w', " ♟ ║");
+
         chessBoard[1][6] = new EmptySquare(1,6, " 　 ║");
 
         chessBoard[2][0] = new EmptySquare(2, 0," 　 ║");
