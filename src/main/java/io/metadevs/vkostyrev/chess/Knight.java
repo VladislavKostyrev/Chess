@@ -3,7 +3,7 @@ package io.metadevs.vkostyrev.chess;
 import static io.metadevs.vkostyrev.chess.GameLogic.isActionCorrect;
 
 public class Knight extends ChessPiece {
-    Knight (int row, int col, char colour, String pieceIcon) {
+    Knight(int row, int col, char colour, String pieceIcon) {
         super(row, col, colour, pieceIcon);
     }
 
@@ -16,25 +16,57 @@ public class Knight extends ChessPiece {
     public void checkCanPieceWalkThat(ChessPiece squareForMove) {
         isActionCorrect = false;
 
-        if (this.col - squareForMove.col == 1 && this.row - squareForMove.row == 2)  //верх лево
-            isActionCorrect = true;
-        if (this.col - squareForMove.col == -1 && this.row - squareForMove.row == 2)  //верх право
-            isActionCorrect = true;
-        if (this.col - squareForMove.col == 1 && this.row - squareForMove.row == -2)   //низ лево
-            isActionCorrect = true;
-        if (this.col - squareForMove.col == -1 && this.row - squareForMove.row == -2)  //низ право
-            isActionCorrect = true;
-        if (this.col - squareForMove.col == -2 && this.row - squareForMove.row == -1)  //лево верх
-            isActionCorrect = true;
-        if (this.col - squareForMove.col == -2 && this.row - squareForMove.row == 1)  //лево низ
-            isActionCorrect = true;
-        if (this.col - squareForMove.col == 2 && this.row - squareForMove.row == -1)  //право верх
-            isActionCorrect = true;
-        if (this.col - squareForMove.col == 2 && this.row - squareForMove.row == 1)  //право низ
-            isActionCorrect = true;
+        searchSquareForMoveInForwardRightPath(squareForMove);
+        searchSquareForMoveInForwardLeftPath(squareForMove);
+        searchSquareForMoveInBackLeftPath(squareForMove);
+        searchSquareForMoveInBackRightPath(squareForMove);
+        searchSquareForMoveInLeftForwardPath(squareForMove);
+        searchSquareForMoveInLeftBackPath(squareForMove);
+        searchSquareForMoveInRightForwardPath(squareForMove);
+        searchSquareForMoveInRightBackPath(squareForMove);
 
         if (!isActionCorrect)
             System.out.println("Эта фигура не может так ходить.");
+    }
+
+    private void searchSquareForMoveInForwardRightPath(ChessPiece squareForMove) {
+        if (this.col - squareForMove.col == -1 && this.row - squareForMove.row == 2)
+            isActionCorrect = true;
+    }
+
+    private void searchSquareForMoveInForwardLeftPath(ChessPiece squareForMove) {
+        if (this.col - squareForMove.col == 1 && this.row - squareForMove.row == 2)
+            isActionCorrect = true;
+    }
+
+    private void searchSquareForMoveInBackLeftPath(ChessPiece squareForMove) {
+        if (this.col - squareForMove.col == 1 && this.row - squareForMove.row == -2)
+            isActionCorrect = true;
+    }
+
+    private void searchSquareForMoveInBackRightPath(ChessPiece squareForMove) {
+        if (this.col - squareForMove.col == -1 && this.row - squareForMove.row == -2)
+            isActionCorrect = true;
+    }
+
+    private void searchSquareForMoveInLeftForwardPath(ChessPiece squareForMove) {
+        if (this.col - squareForMove.col == -2 && this.row - squareForMove.row == -1)
+            isActionCorrect = true;
+    }
+
+    private void searchSquareForMoveInLeftBackPath(ChessPiece squareForMove) {
+        if (this.col - squareForMove.col == -2 && this.row - squareForMove.row == 1)
+            isActionCorrect = true;
+    }
+
+    private void searchSquareForMoveInRightForwardPath(ChessPiece squareForMove) {
+        if (this.col - squareForMove.col == 2 && this.row - squareForMove.row == -1)
+            isActionCorrect = true;
+    }
+
+    private void searchSquareForMoveInRightBackPath(ChessPiece squareForMove) {
+        if (this.col - squareForMove.col == 2 && this.row - squareForMove.row == 1)
+            isActionCorrect = true;
     }
 
     @Override
