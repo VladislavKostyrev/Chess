@@ -9,6 +9,7 @@ abstract class ChessPiece {
     int row;
     int col;
     String pieceIcon;
+    ChessPiece squareForMove;
 
     ChessPiece(int row, int col, String pieceIcon) {
         this.row = row;
@@ -43,27 +44,27 @@ abstract class ChessPiece {
     public void checkPieceNotBlocked() {    //todo реализовать метод
     }
 
-    abstract public void checkCanPieceMove(ChessPiece squareForMove);        //todo он точно нужен?
+    abstract public void checkCanPieceMove();        //todo он точно нужен?
 
-    abstract public void checkCanPieceWalkThat(ChessPiece squareForMove);
+    abstract public void checkCanPieceWalkThat();
 
-    abstract public void checkThereObstacleAlongPath(ChessPiece squareForMove);
+    abstract public void checkThereObstacleAlongPath();
 
-    public void checkThereObstacleAtEndPath(ChessPiece squareForMove) {
+    public void checkThereObstacleAtEndPath() {
         if (squareForMove.colour == walkingColour) {
             System.out.println("На этой клетке находится ваша фигура.");
             isActionCorrect = false;
         }
     }
 
-    public void checkPieceNotBeKing(ChessPiece squareForMove) {      //todo нейминг
+    public void checkPieceNotBeKing() {      //todo нейминг
         if (squareForMove instanceof King) {
             System.out.println("Вы не можете рубить короля!");
             isActionCorrect = false;
         }
     }
 
-    public void putPiece(ChessPiece squareForMove) {    //todo название бизнеса но исполнение нет? разбить на поставить/заменить/удалить
+    public void putPiece() {    //todo название бизнеса но исполнение нет? разбить на поставить/заменить/удалить
         chessBoard[squareForMove.row][squareForMove.col] = this;
 
         ChessPiece link = new EmptySquare(this.row, this.col, " 　 ║");     //todo нейминг линк

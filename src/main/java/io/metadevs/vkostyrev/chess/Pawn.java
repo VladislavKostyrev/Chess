@@ -11,36 +11,36 @@ public class Pawn extends ChessPiece {
     }
 
     @Override
-    public void checkCanPieceMove(ChessPiece squareForMove) {
-        checkCanPieceWalkThat(squareForMove);
+    public void checkCanPieceMove() {
+        checkCanPieceWalkThat();
 
     }
 
     @Override
-    public void checkCanPieceWalkThat(ChessPiece squareForMove) {
+    public void checkCanPieceWalkThat() {
         //TODO реализовать взятие на проходе
         isActionCorrect = false;
 
-        searchSquareForMoveInForward(squareForMove);
-        searchSquareForMoveInForwardRight(squareForMove);
-        searchSquareForMoveInForwardLeft(squareForMove);
+        searchSquareForMoveInForward();
+        searchSquareForMoveInForwardRight();
+        searchSquareForMoveInForwardLeft();
 
         if (!isActionCorrect)
             System.out.println("Эта фигура не может так ходить.");
     }
 
-    private void searchSquareForMoveInForward(ChessPiece squareForMove) {
-        if (isMoveForwardOneSquare(squareForMove)) {
+    private void searchSquareForMoveInForward() {
+        if (isMoveForwardOneSquare()) {
             isFirstStepDone = true;
             isActionCorrect = true;
         }
-        if (isMoveForwardTwoSquare(squareForMove)) {
+        if (isMoveForwardTwoSquare()) {
             isFirstStepDone = true;
             isActionCorrect = true;
         }
     }
 
-    private boolean isMoveForwardOneSquare(ChessPiece squareForMove) {
+    private boolean isMoveForwardOneSquare() {
         if (this.colour == 'w') {
             return squareForMove.row == this.row - 1 && this.col == squareForMove.col && squareForMove instanceof EmptySquare;
         }
@@ -51,7 +51,7 @@ public class Pawn extends ChessPiece {
         return false;
     }
 
-    private boolean isMoveForwardTwoSquare(ChessPiece squareForMove) {
+    private boolean isMoveForwardTwoSquare() {
         if (this.colour == 'w') {
             return this.row == 6 && squareForMove.row == 4 && this.col == squareForMove.col && squareForMove instanceof EmptySquare && chessBoard[5][squareForMove.col] instanceof EmptySquare && !this.isFirstStepDone;
         }
@@ -62,7 +62,7 @@ public class Pawn extends ChessPiece {
         return false;
     }
 
-    private void searchSquareForMoveInForwardRight(ChessPiece squareForMove) {
+    private void searchSquareForMoveInForwardRight() {
         if (this.colour == 'w') {
             if (squareForMove.row == this.row - 1 && this.col - squareForMove.col == -1 && (this.col != squareForMove.colour && !(squareForMove instanceof EmptySquare))) {
                 isFirstStepDone = true;
@@ -78,7 +78,7 @@ public class Pawn extends ChessPiece {
         }
     }
 
-    private void searchSquareForMoveInForwardLeft(ChessPiece squareForMove) {
+    private void searchSquareForMoveInForwardLeft() {
         if (this.colour == 'w') {
             if (squareForMove.row == this.row - 1 && this.col - squareForMove.col == 1 && (this.col != squareForMove.colour && !(squareForMove instanceof EmptySquare))) {
                 isFirstStepDone = true;
@@ -95,7 +95,7 @@ public class Pawn extends ChessPiece {
     }
 
     @Override
-    public void checkThereObstacleAlongPath(ChessPiece squareForMove) {
+    public void checkThereObstacleAlongPath() {
         //TODO этот метод вызывается только при реализации взятия на проходе
     }
 }

@@ -11,14 +11,14 @@ public class EmptySquare extends ChessPiece {
     }
 
     @Override
-    public void checkCanPieceMove(ChessPiece squareForMove) {
+    public void checkCanPieceMove() {
     }
 
     @Override
-    public void checkCanPieceWalkThat(ChessPiece takenPiece) {
+    public void checkCanPieceWalkThat() {
     }
 
     @Override
-    public void checkThereObstacleAlongPath(ChessPiece squareForMove){
+    public void checkThereObstacleAlongPath(){
     }
 }

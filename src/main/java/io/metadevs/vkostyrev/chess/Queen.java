@@ -9,40 +9,40 @@ public class Queen extends ChessPiece {
     }
 
     @Override
-    public void checkCanPieceMove(ChessPiece squareForMove) {
-        checkCanPieceWalkThat(squareForMove);
-        checkThereObstacleAlongPath(squareForMove);
+    public void checkCanPieceMove() {
+        checkCanPieceWalkThat();
+        checkThereObstacleAlongPath();
     }
 
     @Override
-    public void checkCanPieceWalkThat(ChessPiece squareForMove) {
+    public void checkCanPieceWalkThat() {
         isActionCorrect = false;
 
-        searchSquareForMoveInVertical(squareForMove);
-        searchSquareForMoveInHorizontal(squareForMove);
+        searchSquareForMoveInVertical();
+        searchSquareForMoveInHorizontal();
 
-        searchSquareForMoveInForwardRightPath(squareForMove);
-        searchSquareForMoveInForwardLeftPath(squareForMove);
-        searchSquareForMoveInBackLeftPath(squareForMove);
-        searchSquareForMoveInBackRightPath(squareForMove);
+        searchSquareForMoveInForwardRightPath();
+        searchSquareForMoveInForwardLeftPath();
+        searchSquareForMoveInBackLeftPath();
+        searchSquareForMoveInBackRightPath();
 
         if (!isActionCorrect)
             System.out.println("Эта фигура не может так ходить.");
     }
 
-    private void searchSquareForMoveInVertical(ChessPiece squareForMove) {
+    private void searchSquareForMoveInVertical() {
         if ((this.col == squareForMove.col) && (this.row != squareForMove.row)) {
             isActionCorrect = true;
         }
     }
 
-    private void searchSquareForMoveInHorizontal(ChessPiece squareForMove) {
+    private void searchSquareForMoveInHorizontal() {
         if ((this.col != squareForMove.col) && (this.row == squareForMove.row)) {
             isActionCorrect = true;
         }
     }
 
-    private void searchSquareForMoveInForwardRightPath(ChessPiece squareForMove) {
+    private void searchSquareForMoveInForwardRightPath() {
         for (int row = this.row, col = this.col; row >= 0 && col <= 7; row--, col++) {
             if ((chessBoard[row][col].equals(squareForMove))) {
                 isActionCorrect = true;
@@ -51,7 +51,7 @@ public class Queen extends ChessPiece {
         }
     }
 
-    private void searchSquareForMoveInForwardLeftPath(ChessPiece squareForMove) {
+    private void searchSquareForMoveInForwardLeftPath() {
         for (int row = this.row, col = this.col; row >= 0 && col >= 0; row--, col--) {
             if ((chessBoard[row][col].equals(squareForMove))) {
                 isActionCorrect = true;
@@ -60,7 +60,7 @@ public class Queen extends ChessPiece {
         }
     }
 
-    private void searchSquareForMoveInBackLeftPath(ChessPiece squareForMove) {
+    private void searchSquareForMoveInBackLeftPath() {
         for (int row = this.row, col = this.col; row <= 7 && col >= 0; row++, col--) {
             if ((chessBoard[row][col].equals(squareForMove))) {
                 isActionCorrect = true;
@@ -69,7 +69,7 @@ public class Queen extends ChessPiece {
         }
     }
 
-    private void searchSquareForMoveInBackRightPath(ChessPiece squareForMove) {
+    private void searchSquareForMoveInBackRightPath() {
         for (int row = this.row, col = this.col; row <= 7 && col <= 7; row++, col++) {
             if ((chessBoard[row][col].equals(squareForMove))) {
                 isActionCorrect = true;
@@ -79,67 +79,67 @@ public class Queen extends ChessPiece {
     }
 
     @Override
-    public void checkThereObstacleAlongPath(ChessPiece squareForMove) {
-        if (isForwardPath(squareForMove)) {
-            checkThereObstacleForwardPath(squareForMove);
+    public void checkThereObstacleAlongPath() {
+        if (isForwardPath()) {
+            checkThereObstacleForwardPath();
         }
-        if (isBackPath(squareForMove)) {
-            checkThereObstacleBackPath(squareForMove);
+        if (isBackPath()) {
+            checkThereObstacleBackPath();
         }
-        if (isLeftPath(squareForMove)) {
-            checkThereObstacleLeftPath(squareForMove);
+        if (isLeftPath()) {
+            checkThereObstacleLeftPath();
         }
-        if (isRightPath(squareForMove)) {
-            checkThereObstacleRightPath(squareForMove);
+        if (isRightPath()) {
+            checkThereObstacleRightPath();
         }
 
-        if (isForwardRightPath(squareForMove)) {
-            checkIsThereObstacleForwardRightPath(squareForMove);
+        if (isForwardRightPath()) {
+            checkIsThereObstacleForwardRightPath();
         }
-        if (isForwardLeftPath(squareForMove)) {
-            checkIsThereObstacleForwardLeftPath(squareForMove);
+        if (isForwardLeftPath()) {
+            checkIsThereObstacleForwardLeftPath();
         }
-        if (isBackLeftPath(squareForMove)) {
-            checkIsThereObstacleBackLeftPath(squareForMove);
+        if (isBackLeftPath()) {
+            checkIsThereObstacleBackLeftPath();
         }
-        if (isBackRightPath(squareForMove)) {
-            checkIsThereObstacleBackRightPath(squareForMove);
+        if (isBackRightPath()) {
+            checkIsThereObstacleBackRightPath();
         }
     }
 
-    private boolean isForwardPath(ChessPiece squareForMove) {
+    private boolean isForwardPath() {
         return this.col == squareForMove.col && this.row > squareForMove.row;
     }
 
-    private boolean isBackPath(ChessPiece squareForMove) {
+    private boolean isBackPath() {
         return this.col == squareForMove.col && this.row < squareForMove.row;
     }
 
-    private boolean isLeftPath(ChessPiece squareForMove) {
+    private boolean isLeftPath() {
         return this.col > squareForMove.col && this.row == squareForMove.row;
     }
 
-    private boolean isRightPath(ChessPiece squareForMove) {
+    private boolean isRightPath() {
         return this.col < squareForMove.col && this.row == squareForMove.row;
     }
 
-    private boolean isForwardRightPath(ChessPiece squareForMove) {
+    private boolean isForwardRightPath() {
         return this.col < squareForMove.col && this.row > squareForMove.row;
     }
 
-    private boolean isForwardLeftPath(ChessPiece squareForMove) {
+    private boolean isForwardLeftPath() {
         return this.col > squareForMove.col && this.row > squareForMove.row;
     }
 
-    private boolean isBackLeftPath(ChessPiece squareForMove) {
+    private boolean isBackLeftPath() {
         return this.col > squareForMove.col && this.row < squareForMove.row;
     }
 
-    private boolean isBackRightPath(ChessPiece squareForMove) {
+    private boolean isBackRightPath() {
         return this.col < squareForMove.col && this.row < squareForMove.row;
     }
 
-    private void checkThereObstacleForwardPath(ChessPiece squareForMove) {
+    private void checkThereObstacleForwardPath() {
         for (int row = this.row - 1; row > squareForMove.row; row--) {
             if (!(chessBoard[row][this.col] instanceof EmptySquare)) {
                 System.out.println("На пути присутствует помеха.");
@@ -148,7 +148,7 @@ public class Queen extends ChessPiece {
         }
     }
 
-    private void checkThereObstacleBackPath(ChessPiece squareForMove) {
+    private void checkThereObstacleBackPath() {
         for (int row = this.row + 1; row < squareForMove.row; row++) {
             if (!(chessBoard[row][this.col] instanceof EmptySquare)) {
                 System.out.println("На пути присутствует помеха.");
@@ -157,7 +157,7 @@ public class Queen extends ChessPiece {
         }
     }
 
-    private void checkThereObstacleLeftPath(ChessPiece squareForMove) {
+    private void checkThereObstacleLeftPath() {
         for (int col = this.col - 1; col > squareForMove.col; col--) {
             if (!(chessBoard[this.row][col] instanceof EmptySquare)) {
                 System.out.println("На пути присутствует помеха.");
@@ -166,7 +166,7 @@ public class Queen extends ChessPiece {
         }
     }
 
-    private void checkThereObstacleRightPath(ChessPiece squareForMove) {
+    private void checkThereObstacleRightPath() {
         for (int col = this.col + 1; col < squareForMove.col; col++) {
             if (!(chessBoard[this.row][col] instanceof EmptySquare)) {
                 System.out.println("На пути присутствует помеха.");
@@ -175,7 +175,7 @@ public class Queen extends ChessPiece {
         }
     }
 
-    private void checkIsThereObstacleForwardRightPath(ChessPiece squareForMove) {
+    private void checkIsThereObstacleForwardRightPath() {
         for (int row = this.row - 1, col = this.col + 1; row > squareForMove.row; row--, col++) {
             if (!(chessBoard[row][col] instanceof EmptySquare)) {
                 System.out.println("На пути присутствует помеха.");
@@ -184,7 +184,7 @@ public class Queen extends ChessPiece {
         }
     }
 
-    private void checkIsThereObstacleForwardLeftPath(ChessPiece squareForMove) {
+    private void checkIsThereObstacleForwardLeftPath() {
         for (int row = this.row - 1, col = this.col - 1; row > squareForMove.row; row--, col--) {
             if (!(chessBoard[row][col] instanceof EmptySquare)) {
                 System.out.println("На пути присутствует помеха.");
@@ -193,7 +193,7 @@ public class Queen extends ChessPiece {
         }
     }
 
-    private void checkIsThereObstacleBackLeftPath(ChessPiece squareForMove) {
+    private void checkIsThereObstacleBackLeftPath() {
         for (int row = this.row + 1, col = this.col - 1; row < squareForMove.row; row++, col--) {
             if (!(chessBoard[row][col] instanceof EmptySquare)) {
                 System.out.println("На пути присутствует помеха.");
@@ -202,7 +202,7 @@ public class Queen extends ChessPiece {
         }
     }
 
-    private void checkIsThereObstacleBackRightPath(ChessPiece squareForMove) {
+    private void checkIsThereObstacleBackRightPath() {
         for (int row = this.row + 1, col = this.col + 1; row < squareForMove.row; row++, col++) {
             if (!(chessBoard[row][col] instanceof EmptySquare)) {
                 System.out.println("На пути присутствует помеха.");

@@ -96,15 +96,13 @@ abstract public class GameLogic {
     }
 
     public static void movePiece(ChessPiece takenPiece) {
-        ChessPiece squareForMove;
-
         do {
             isActionCorrect = true;
             System.out.print("Поставить фигуру на поле: ");
-            squareForMove = appointChessboardSquare();                         //todo нейминг метода
-            moveChecks(takenPiece, squareForMove);
+            takenPiece.squareForMove = appointChessboardSquare();                         //todo нейминг метода
+            moveChecks(takenPiece);
         } while (!isActionCorrect);
-        takenPiece.putPiece(squareForMove);
+        takenPiece.putPiece();
     }
 
     private static ChessPiece appointChessboardSquare() {
@@ -206,10 +204,10 @@ abstract public class GameLogic {
         System.out.println(errorMessage);
     }
 
-    private static void moveChecks(ChessPiece takenPiece, ChessPiece squareForMove) {
-        takenPiece.checkCanPieceMove(squareForMove);
-        takenPiece.checkThereObstacleAtEndPath(squareForMove);
-        takenPiece.checkPieceNotBeKing(squareForMove);                           //todo нейминг
+    private static void moveChecks(ChessPiece takenPiece) {
+        takenPiece.checkCanPieceMove();
+        takenPiece.checkThereObstacleAtEndPath();
+        takenPiece.checkPieceNotBeKing();                           //todo нейминг
     }
 
     public static void checkGameWin() {                        //todo закончить
